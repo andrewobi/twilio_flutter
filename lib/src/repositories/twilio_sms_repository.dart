@@ -9,7 +9,7 @@ import 'package:twilio_flutter/src/utils/utils.dart';
 abstract class TwilioSmsRepository {
   Future<SentSmsData> getSmsList(
       {required String pageSize, required TwilioCreds? twilioCreds});
-  Future<int> sendSMS(
+  Future<List<String>> sendSMS(
       {required String toNumber,
       required String messageBody,
       required TwilioCreds? twilioCreds});
@@ -52,7 +52,7 @@ class TwilioSMSRepositoryImpl extends TwilioSmsRepository {
   }
 
   @override
-  Future<int> sendSMS(
+  Future<List<String>> sendSMS(
       {required String toNumber,
       required String messageBody,
       required TwilioCreds? twilioCreds}) async {
@@ -73,14 +73,14 @@ class TwilioSMSRepositoryImpl extends TwilioSmsRepository {
         headers: headers, body: body);
     if (response.statusCode == 201) {
       print('Sms sent Success');
-      return response.statusCode;
+      return [response.statusCode.toString()];
     } else {
       print('Sending Failed');
       ErrorData errorData = ErrorData.fromJson(jsonDecode(response.body));
       print('Error Code : ' + errorData.code.toString());
       print('Error Message : ' + errorData.message!);
       print("More info : " + errorData.moreInfo!);
-      throw Exception();
+      return [errorData.code.toString(), errorData.message!];
     }
   }
 

@@ -56,7 +56,7 @@ class TwilioFlutter {
   ///
   ///	For more status codes refer
   /// * https://www.twilio.com/docs/api/errors
-  Future<int> sendSMS(
+  Future<List<String>> sendSMS(
       {required String toNumber, required String messageBody}) async {
     return await _smsRepository.sendSMS(
         toNumber: toNumber,
